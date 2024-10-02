@@ -4,6 +4,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 import os
 
+# ffmpeg -i "SOURCE_PATH" -s hd480 -c:v libx264 -crf 23 -c:a aac -strict -2 "TARGET_PATH"
+# ffmpeg -i "SOURCE_PATH" -s hd720 -c:v libx264 -crf 23 -c:a aac -strict -2 "TARGET_PATH"
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
