@@ -40,10 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'content.apps.ContentConfig',
     'rest_framework',
+    'debug_toolbar',
+
 
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,3 +144,9 @@ CACHES = {
         "KEY_PREFIX": "videoflix"    
     }
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+CACHE_TTL = 60 * 15
