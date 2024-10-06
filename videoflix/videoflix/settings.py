@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'content.apps.ContentConfig',
     'rest_framework',
     'debug_toolbar',
-    "django_rq",
+    'django_rq',
+    'import_export',
+
 ]
 
 MIDDLEWARE = [
@@ -161,3 +163,7 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 360,
     },
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True

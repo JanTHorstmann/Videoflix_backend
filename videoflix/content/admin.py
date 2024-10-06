@@ -1,17 +1,19 @@
 from django.contrib import admin
 from .models import Video
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 
-# class VideoAdmin(admin.ModelAdmin):
-#     list_display = ('title', 'id','due_date', 'priority', 'category', 'author', 'token')
 
-#     search_fields = ('title', 'id','description', 'author__username', 'token')
 
-#     list_filter = ('priority', 'id','category', 'due_date', 'author')
+class VideoResource(resources.ModelResource):
 
-#     fields = ()
+    class Meta:
+        model = Video
 
-#     readonly_fields = ('created_at',)
+class VideoAdmin(ImportExportModelAdmin):
+    resource_classes = [VideoResource]
 
-admin.site.register(Video)
+admin.site.register(Video, VideoAdmin)
+
