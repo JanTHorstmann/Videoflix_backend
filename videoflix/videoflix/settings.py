@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_rq',
     'import_export',
-
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -167,3 +167,4 @@ RQ_QUEUES = {
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+AUTH_USER_MODEL = 'user.CustomUser'
