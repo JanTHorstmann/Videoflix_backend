@@ -20,8 +20,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
 from content.views import VideoViewSet
-from user.views import CustomUserViewSet, RegisterUserView
+from user.views import CustomUserViewSet, RegisterUserView, LoginAPIView
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = DefaultRouter()
 router.register(r'videos', VideoViewSet)
@@ -32,5 +33,8 @@ urlpatterns = [
     path('django-rq/', include('django_rq.urls')),
     path('videoflix/', include(router.urls)),
     path('register/', RegisterUserView.as_view(), name='register'),
+    path('login/', LoginAPIView.as_view(), name='register'),
+
+    path('auth/', obtain_auth_token, name='auth'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) + debug_toolbar_urls()
