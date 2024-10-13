@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'content.apps.ContentConfig',
+    'corsheaders',
     'rest_framework',
     'debug_toolbar',
     'django_rq',
     'import_export',
     'user',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'videoflix.urls'
@@ -168,3 +171,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 AUTH_USER_MODEL = 'user.CustomUser'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',  # Deine Angular-Frontend-URL
+]
