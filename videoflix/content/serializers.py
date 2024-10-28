@@ -5,3 +5,6 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = '__all__'
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()

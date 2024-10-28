@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
-from content.views import VideoViewSet
+from content.views import VideoViewSet, PasswordResetView, PasswordResetConfirmView
 from user.views import CustomUserViewSet, RegisterUserView, LoginAPIView
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
@@ -34,6 +34,8 @@ urlpatterns = [
     path('videoflix/', include(router.urls)),
     path('register/', RegisterUserView.as_view(), name='register'),
     path('login/', LoginAPIView.as_view(), name='register'),
+    path('auth/password-reset/', PasswordResetView.as_view(), name='password-reset'),
+    path('auth/password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 
     path('auth/', obtain_auth_token, name='auth'),
 
