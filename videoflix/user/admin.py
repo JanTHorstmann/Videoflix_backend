@@ -15,12 +15,13 @@ class CustomUserAdmin(admin.ModelAdmin):
               (                    
                 'custom',                    
                 'phone',                    
-                'address'                
+                'address',
+                'confirmed'               
                 )            
             }        
         ),  
         *UserAdmin.fieldsets,        
     )
 
-    search_fields = ('username', 'email', 'custom', 'phone')
+    search_fields = ('username', 'email', 'custom', 'phone', 'confirmed')
 # admin.site.register(CustomUser)
