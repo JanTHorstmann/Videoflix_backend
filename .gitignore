@@ -1,5 +1,5 @@
 env/
 env_lin/
 .env
-**db.sqlite3
-videoflix/media
+# **db.sqlite3
+# videoflix/media
