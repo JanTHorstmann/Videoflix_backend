@@ -61,16 +61,17 @@ class SendPasswordResetEmailView(APIView):
     
 class PasswordResetConfirmView(APIView):
     def post(self, request):
-        token = request.data.get('token')
+        token = request.GET.get("token")
         new_password = request.data.get('new_password')
-        
+        print(new_password)
+        print(token)
         # Find user by token and update password
         try:
-            user = CustomUser.objects.get(profile__reset_token=token)
+            user = CustomUser.objects.get(reset_token=token)
             user.set_password(new_password)
-            user.profile.reset_token = ''  # Clear token after successful reset
-            user.profile.save()
+            user.reset_token = ''  # Clear token after successful reset
             user.save()
+            # user.save()
             return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
             return Response({'error': 'Invalid token.'}, status=status.HTTP_400_BAD_REQUEST)
