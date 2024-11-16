@@ -174,7 +174,8 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 AUTH_USER_MODEL = 'user.CustomUser'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200',  # Deine Angular-Frontend-URL
+    'http://localhost:4200',
+    'https://videoflix.jan-horstmann.eu'
 ]
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
