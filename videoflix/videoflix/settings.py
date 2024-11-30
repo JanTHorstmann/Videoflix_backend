@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-9zaoh8@vnwvv81ix4t*%ts%85q!fxnl8sgevos5=j0$)0y(dqw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'videoflix.jan-horstmann.eu','34.141.66.162']
 
 
 # Application definition
@@ -128,7 +128,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static'
+)
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -168,7 +169,7 @@ RQ_QUEUES = {
     },
 }
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
+
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 AUTH_USER_MODEL = 'user.CustomUser'
@@ -185,4 +186,3 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
