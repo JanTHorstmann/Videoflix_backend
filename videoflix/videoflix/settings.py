@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-9zaoh8@vnwvv81ix4t*%ts%85q!fxnl8sgevos5=j0$)0y(dqw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'videoflix.jan-horstmann.eu','34.141.66.162']
+ALLOWED_HOSTS = ['127.0.0.1', 'videoflix.jan-horstmann.eu','34.141.66.162', 'videoflix-backend.jan-horstmann.eu']
 
 
 # Application definition
