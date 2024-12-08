@@ -9,7 +9,6 @@ import django_rq
 # ffmpeg -i "SOURCE_PATH" -s hd720 -c:v libx264 -crf 23 -c:a aac -strict -2 "TARGET_PATH"
 
 @receiver(post_save, sender=Video)
-# @cache_page(CACHE_TTL)              #sollte in der view.py
 def video_post_save(sender, instance, created, **kwargs):
     print('Video saved!')
     if created:
