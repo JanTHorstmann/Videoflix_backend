@@ -1,17 +1,13 @@
 from django.shortcuts import render
+from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets, status
-from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.views import APIView
-from .models import Video
-from .serializers import VideoSerializer, PasswordResetSerializer
-# from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
-# from django.contrib.auth.models import User
-from django.utils.crypto import get_random_string
-from django.contrib.auth import get_user_model, authenticate
-from django.template.loader import render_to_string
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from .models import Video, VideoProgress
+from .serializers import VideoSerializer, VideoProgressSerializer
 
 CustomUser = get_user_model()
 class VideoViewSet(viewsets.ModelViewSet):
@@ -30,49 +26,38 @@ class VideoViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class SendPasswordResetEmailView(APIView):
-    def post(self, request):
-        serializer = PasswordResetSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            try:
-                user = CustomUser.objects.get(email=email)
+class VideoProgressViewSet(viewsets.ModelViewSet):
+    queryset = VideoProgress.objects.all()
+    serializer_class = VideoProgressSerializer
+    permission_classes = [IsAuthenticated]
 
-                user.set_reset_token()
+    def get_queryset(self):
+        # Return only the logged-in user's progress
+        return self.queryset.filter(user=self.request.user)
 
-                reset_url = f"http://localhost:4200/resetpassword?token={user.reset_token}"
-                html_content = render_to_string("password_reset_email.html", {
-                    "user": user,
-                    "reset_url": reset_url
-                })
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-                subject = "Reset your Password"
-                from_email = "noreply@videoflix.com"
-                email_message = EmailMultiAlternatives(subject, "", from_email, [email])
-                email_message.attach_alternative(html_content, "text/html")
-                email_message.send()
-                
-                return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
-            except CustomUser.DoesNotExist:
-                return Response({'error': 'User with this email does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+    @action(detail=False, methods=['post'])
+    def update_progress(self, request):
+        user = request.user
+        video_id = request.data.get('video_id')
+        played_time = request.data.get('played_time')
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class PasswordResetConfirmView(APIView):
-    def post(self, request):
-        token = request.GET.get("token")
-        new_password = request.data.get('new_password')
-        print(new_password)
-        print(token)
-        # Find user by token and update password
+        if not video_id or played_time is None:
+            return Response({'error': 'video_id and played_time are required'}, status=400)
+
         try:
-            user = CustomUser.objects.get(reset_token=token)
-            user.set_password(new_password)
-            user.reset_token = ''  # Clear token after successful reset
-            user.save()
-            # user.save()
-            return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
-        except CustomUser.DoesNotExist:
-            return Response({'error': 'Invalid token.'}, status=status.HTTP_400_BAD_REQUEST)
+            video = Video.objects.get(id=video_id)
+        except Video.DoesNotExist:
+            return Response({'error': 'Video not found'}, status=404)
+
+        # Update or create progress
+        progress, created = VideoProgress.objects.update_or_create(
+            user=user,
+            video=video,
+            defaults={'played_time': played_time}
+        )
+
+        return Response(VideoProgressSerializer(progress).data)
 
