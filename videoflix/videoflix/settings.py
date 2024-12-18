@@ -151,15 +151,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-CACHES = {    
-    "default": {        
-        "BACKEND": "django_redis.cache.RedisCache",        
-        "LOCATION": "redis://127.0.0.1:6379/1",        
-        "OPTIONS": {        
-            "PASSWORD": "foobared",     
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"        
-        },        
-        "KEY_PREFIX": "videoflix"    
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "PASSWORD": "foobared",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "videoflix"
     }
 }
 
@@ -176,7 +176,7 @@ RQ_QUEUES = {
         'DB': 0,
         # 'USERNAME': 'some-user',
         'PASSWORD': 'foobared',
-        'DEFAULT_TIMEOUT': 360,
+        'DEFAULT_TIMEOUT': 1200,
     },
 }
 
