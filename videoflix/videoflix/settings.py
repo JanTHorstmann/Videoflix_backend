@@ -85,10 +85,21 @@ WSGI_APPLICATION = 'videoflix.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'videoflix',
+        'USER': 'jan',
+        'PASSWORD': 'OdinDemon1992*',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -140,15 +151,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-CACHES = {    
-    "default": {        
-        "BACKEND": "django_redis.cache.RedisCache",        
-        "LOCATION": "redis://127.0.0.1:6379/1",        
-        "OPTIONS": {        
-            "PASSWORD": "foobared",     
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"        
-        },        
-        "KEY_PREFIX": "videoflix"    
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "PASSWORD": "foobared",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "videoflix"
     }
 }
 
@@ -165,7 +176,7 @@ RQ_QUEUES = {
         'DB': 0,
         # 'USERNAME': 'some-user',
         'PASSWORD': 'foobared',
-        'DEFAULT_TIMEOUT': 360,
+        'DEFAULT_TIMEOUT': 1200,
     },
 }
 

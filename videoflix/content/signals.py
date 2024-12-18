@@ -23,16 +23,28 @@ def video_post_delete(sender, instance, using, origin, **kwargs):
     if instance.video_file:
         if os.path.isfile(instance.video_file.path):
             os.remove(instance.video_file.path)
+            print('Hauptvideo gelöscht:', instance.video_file.path)
 
-            if os.path.isfile(instance.video_file.path[:-4]+'_120p.mp4'):
-                os.remove(instance.video_file.path[:-4]+'_120p.mp4')
+            resolutions = ['_120p.mp4', '_360p.mp4', '_720p.mp4', '_1080p.mp4']
+            for res in resolutions:
+               res_file = instance.video_file.path[:-4] + res
+               if os.path.isfile(res_file):
+                os.remove(res_file)
+                print(f'{res} gelöscht:', res_file)
 
-            if os.path.isfile(instance.video_file.path[:-4]+'_360p.mp4'):
-               os.remove(instance.video_file.path[:-4]+'_360p.mp4')
+    if instance.thumbnail and os.path.isfile(instance.thumbnail.path):
+       os.remove(instance.thumbnail.path)
+       print('Thumbnail gelöscht:', instance.thumbnail.path)
 
-            if os.path.isfile(instance.video_file.path[:-4]+'_720p.mp4'):
-                os.remove(instance.video_file.path[:-4]+'_720p.mp4')
-
-            if os.path.isfile(instance.video_file.path[:-4]+'_1080p.mp4'):
-                os.remove(instance.video_file.path[:-4]+'_1080p.mp4')
-            print('File deleted:', instance.video_file.path)
+#            if os.path.isfile(instance.video_file.path[:-4]+'_120p.mp4'):
+#                os.remove(instance.video_file.path[:-4]+'_120p.mp4')
+#
+#            if os.path.isfile(instance.video_file.path[:-4]+'_360p.mp4'):
+#               os.remove(instance.video_file.path[:-4]+'_360p.mp4')
+#
+#            if os.path.isfile(instance.video_file.path[:-4]+'_720p.mp4'):
+#                os.remove(instance.video_file.path[:-4]+'_720p.mp4')
+#
+#            if os.path.isfile(instance.video_file.path[:-4]+'_1080p.mp4'):
+#                os.remove(instance.video_file.path[:-4]+'_1080p.mp4')
+#            print('File deleted:', instance.video_file.path)
