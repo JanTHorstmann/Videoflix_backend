@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Video
+from .models import Video, VideoProgress
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -17,3 +17,8 @@ class VideoAdmin(ImportExportModelAdmin):
 
 admin.site.register(Video, VideoAdmin)
 
+class VideoProgressAdmin(admin.ModelAdmin):
+    class Meta:
+        model = VideoProgress
+
+admin.site.register(VideoProgress, VideoProgressAdmin)
