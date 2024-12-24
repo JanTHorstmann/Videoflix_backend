@@ -66,7 +66,7 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
             user=user,
             video=video,
             defaults={'played_time': played_time},
-            defaults={'duration': duration}
+            duration=duration
         )
 
         return Response(VideoProgressSerializer(progress).data)
