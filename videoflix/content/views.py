@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status, serializers
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from .models import Video, VideoProgress
 from .serializers import VideoSerializer, VideoProgressSerializer
@@ -29,7 +28,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 class VideoProgressViewSet(viewsets.ModelViewSet):
     queryset = VideoProgress.objects.all()
     serializer_class = VideoProgressSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [TokenAuthentication]
 
     def get_queryset(self):
         # Return only the logged-in user's progress
@@ -52,21 +51,21 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         user = request.user
         video_id = request.data.get('video_id')
         played_time = request.data.get('played_time')
-    
+
         if not video_id or played_time is None:
             return Response({'error': 'video_id and played_time are required'}, status=400)
-    
+
         try:
             video = Video.objects.get(id=video_id)
         except Video.DoesNotExist:
             return Response({'error': 'Video not found'}, status=404)
-    
+
         # Update or create progress
         progress, created = VideoProgress.objects.update_or_create(
             user=user,
             video=video,
             defaults={'played_time': played_time}
         )
-    
+
         return Response(VideoProgressSerializer(progress).data)
 
