@@ -28,7 +28,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 class VideoProgressViewSet(viewsets.ModelViewSet):
     queryset = VideoProgress.objects.all()
     serializer_class = VideoProgressSerializer
-    permission_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         # Return only the logged-in user's progress
