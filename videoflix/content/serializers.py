@@ -7,10 +7,7 @@ class VideoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VideoProgressSerializer(serializers.ModelSerializer):
-    # user = serializers.StringRelatedField()  # Optional: Replace with UserSerializer if needed
-    # video = serializers.StringRelatedField()  # Optional: Replace with VideoSerializer if needed
-
     class Meta:
         model = VideoProgress
-        fields = '__all__'
-        read_only_fields = ['last_updated']
+        fields = ['played_time']  # Nur `played_time` als Eingabefeld zulassen
+        read_only_fields = ['user', 'video', 'last_updated']  # Diese Felder sind nur lesbar
