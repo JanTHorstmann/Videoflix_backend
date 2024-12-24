@@ -51,6 +51,7 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         user = request.user
         video_id = request.data.get('video_id')
         played_time = request.data.get('played_time')
+        duration = request.data.get('duration')
 
         if not video_id or played_time is None:
             return Response({'error': 'video_id and played_time are required'}, status=400)
@@ -64,7 +65,8 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         progress, created = VideoProgress.objects.update_or_create(
             user=user,
             video=video,
-            defaults={'played_time': played_time}
+            defaults={'played_time': played_time},
+            defaults={'duration': duration}
         )
 
         return Response(VideoProgressSerializer(progress).data)

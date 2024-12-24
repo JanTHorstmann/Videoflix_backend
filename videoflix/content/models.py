@@ -22,6 +22,7 @@ class VideoProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='video_progress')
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='progress')
     played_time = models.FloatField(help_text='Time played in seconds')
+    duration = models.FloatField(help_text='Time played in seconds')
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
