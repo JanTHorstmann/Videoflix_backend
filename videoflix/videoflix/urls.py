@@ -38,7 +38,7 @@ urlpatterns = [
     path('password-reset/', SendPasswordResetEmailView.as_view(), name='password-reset'),
     path('password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
     path('confirm_email/', ConfirmEmailView.as_view(), name='password-reset-confirm'),
-    path('video-progress/', VideoProgressViewSet.as_view(), basename='video-progress'),
+    path(r'video-progress/', VideoProgressViewSet.as_view(), basename='video-progress'),
     # path('auth/', obtain_auth_token, name='auth'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) + staticfiles_urlpatterns() + debug_toolbar_urls()
