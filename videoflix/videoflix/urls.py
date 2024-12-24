@@ -20,8 +20,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
-from content.views import VideoViewSet, SendPasswordResetEmailView, PasswordResetConfirmView
-from user.views import CustomUserViewSet, RegisterUserView, LoginAPIView, ConfirmEmailView
+from content.views import VideoViewSet
+from user.views import CustomUserViewSet, RegisterUserView, LoginAPIView, ConfirmEmailView, SendPasswordResetEmailView, PasswordResetConfirmView
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
 
