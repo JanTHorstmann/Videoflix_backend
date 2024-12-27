@@ -43,8 +43,9 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         except Video.DoesNotExist:
             raise serializers.ValidationError({'video': 'Video not found.'})
 
-        # Speichern mit automatisch gesetztem `user` und `video`
-        serializer.save(user=self.request.user, video=video)
+        if not video:
+            # Speichern mit automatisch gesetztem `user` und `video`
+            serializer.save(user=self.request.user, video=video)
 
     @action(detail=False, methods=['post'])
     def update_progress(self, request):
