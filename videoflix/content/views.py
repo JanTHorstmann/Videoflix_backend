@@ -36,41 +36,53 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         video_id = self.request.data.get('video_id')
+        played_time = self.request.data.get('played_time')  # Optional: Default to 0
+        duration = self.request.data.get('duration')       # Optional: Default to 0
+
         if not video_id:
             raise serializers.ValidationError({'video_id': 'This field is required.'})
+
         try:
             video = Video.objects.get(id=video_id)
         except Video.DoesNotExist:
             raise serializers.ValidationError({'video': 'Video not found.'})
 
-        if not video:
-            # Speichern mit automatisch gesetztem `user` und `video`
-            serializer.save(user=self.request.user, video=video)
-
-    @action(detail=False, methods=['post'])
-    def update_progress(self, request):
-        user = request.user
-        video_id = request.data.get('video_id')
-        played_time = request.data.get('played_time')
-        duration = request.data.get('duration')
-
-        if not video_id or played_time is None:
-            return Response({'error': 'video_id and played_time are required'}, status=400)
-
-        try:
-            video = Video.objects.get(id=video_id)
-        except Video.DoesNotExist:
-            return Response({'error': 'Video not found'}, status=404)
-
-        # Update or create progress
+        # Update or create VideoProgress
         progress, created = VideoProgress.objects.update_or_create(
-            user=user,
+            user=self.request.user,
             video=video,
             defaults={
                 'played_time': played_time,
                 'duration': duration,
-                },
+            }
         )
+        # Set the serializer instance to the created or updated object
+        serializer.instance = progress
 
-        return Response(VideoProgressSerializer(progress).data)
+    # @action(detail=False, methods=['post'])
+    # def update_progress(self, request):
+    #     user = request.user
+    #     video_id = request.data.get('video_id')
+    #     played_time = request.data.get('played_time')
+    #     duration = request.data.get('duration')
+
+    #     if not video_id or played_time is None:
+    #         return Response({'error': 'video_id and played_time are required'}, status=400)
+
+    #     try:
+    #         video = Video.objects.get(id=video_id)
+    #     except Video.DoesNotExist:
+    #         return Response({'error': 'Video not found'}, status=404)
+
+    #     # Update or create progress
+    #     progress, created = VideoProgress.objects.update_or_create(
+    #         user=user,
+    #         video=video,
+    #         defaults={
+    #             'played_time': played_time,
+    #             'duration': duration,
+    #             },
+    #     )
+
+    #     return Response(VideoProgressSerializer(progress).data)
 
