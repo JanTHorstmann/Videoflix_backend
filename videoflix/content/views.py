@@ -65,8 +65,10 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         progress, created = VideoProgress.objects.update_or_create(
             user=user,
             video=video,
-            defaults={'played_time': played_time},
-            duration=duration
+            defaults={
+                'played_time': played_time,
+                'duration': duration,
+                },
         )
 
         return Response(VideoProgressSerializer(progress).data)
