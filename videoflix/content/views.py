@@ -62,10 +62,18 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['delete'])
     def delete_progress(self, request, pk=None):
         try:
-            # Get the object based on the ID (pk) and ensure it belongs to the requesting user
-            progress = self.queryset.get(id=pk, user=request.user)
+            # Suche das Video basierend auf der ID (pk)
+            video = Video.objects.get(id=pk)
+            
+            # Finde den zugehörigen VideoProgress für den Benutzer und das Video
+            progress = VideoProgress.objects.get(video=video, user=request.user)
+            
+            # Lösche den gefundenen VideoProgress
             progress.delete()
             return Response({'message': 'Progress deleted successfully'}, status=204)
+        
+        except Video.DoesNotExist:
+            return Response({'error': 'Video not found'}, status=404)
         except VideoProgress.DoesNotExist:
             return Response({'error': 'Progress not found or access denied'}, status=404)
 
