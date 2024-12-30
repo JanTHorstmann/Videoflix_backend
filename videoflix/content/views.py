@@ -59,30 +59,13 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         # Set the serializer instance to the created or updated object
         serializer.instance = progress
 
-    # @action(detail=False, methods=['post'])
-    # def update_progress(self, request):
-    #     user = request.user
-    #     video_id = request.data.get('video_id')
-    #     played_time = request.data.get('played_time')
-    #     duration = request.data.get('duration')
-
-    #     if not video_id or played_time is None:
-    #         return Response({'error': 'video_id and played_time are required'}, status=400)
-
-    #     try:
-    #         video = Video.objects.get(id=video_id)
-    #     except Video.DoesNotExist:
-    #         return Response({'error': 'Video not found'}, status=404)
-
-    #     # Update or create progress
-    #     progress, created = VideoProgress.objects.update_or_create(
-    #         user=user,
-    #         video=video,
-    #         defaults={
-    #             'played_time': played_time,
-    #             'duration': duration,
-    #             },
-    #     )
-
-    #     return Response(VideoProgressSerializer(progress).data)
+    @action(detail=True, methods=['delete'])
+    def delete_progress(self, request, pk=None):
+        try:
+            # Get the object based on the ID (pk) and ensure it belongs to the requesting user
+            progress = self.queryset.get(id=pk, user=request.user)
+            progress.delete()
+            return Response({'message': 'Progress deleted successfully'}, status=204)
+        except VideoProgress.DoesNotExist:
+            return Response({'error': 'Progress not found or access denied'}, status=404)
 
