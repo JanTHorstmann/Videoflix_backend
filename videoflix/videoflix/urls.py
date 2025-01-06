@@ -38,6 +38,5 @@ urlpatterns = [
     path('password-reset/', SendPasswordResetEmailView.as_view(), name='password-reset'),
     path('password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
     path('confirm_email/', ConfirmEmailView.as_view(), name='password-reset-confirm'),
-    # path('auth/', obtain_auth_token, name='auth'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) + staticfiles_urlpatterns() + debug_toolbar_urls()

@@ -30,12 +30,7 @@ class RegisterUserView(generics.CreateAPIView):
         user.confirmed = False
         user.confirmation_token = get_random_string(20)
         user.save()
-
-        # Token generieren
-        # Speichere das Token zum Benutzer (entweder in einer anderen Tabelle oder im Profil)
-
-        # Bestätigungslink erstellen
-        confirmation_url = f"http://localhost:4200/confirm_email?token={user.confirmation_token}"
+        confirmation_url = f"https://videoflix.jan-horstmann.eu/confirm_email?token={user.confirmation_token}"
 
         # E-Mail senden
         html_content = render_to_string("email_confirmation.html", {
@@ -52,7 +47,6 @@ class RegisterUserView(generics.CreateAPIView):
 class ConfirmEmailView(APIView):
     def get(self, request):
         token = request.GET.get("token")
-        # Finde den Benutzer, der das Token hat
         user = get_object_or_404(CustomUser, confirmation_token=token)
         
         # Bestätigen
@@ -67,7 +61,6 @@ class LoginAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def post(self, request):
-        # Token aus Header prüfen, um automatische Authentifizierung zu ermöglichen
         token_header = request.headers.get('Authorization')
         if token_header and token_header.startswith('Token '):
             token_key = token_header.split(' ')[1]
@@ -86,14 +79,12 @@ class LoginAPIView(APIView):
             password = serializer.validated_data['password']
 
             try:
-                # Benutzer anhand der E-Mail-Adresse finden
                 user = CustomUser.objects.get(email=email)
             except CustomUser.DoesNotExist:
                 return Response({'message': 'Invalid email or password'}, status=401)
             if not user.confirmed:
                 return Response({"error": "Please confirm your email to log in."}, status=status.HTTP_403_FORBIDDEN)
 
-            # Benutzer authentifizieren
             user = authenticate(username=user.username, password=password)
             if user:
                 token, created = Token.objects.get_or_create(user=user)
@@ -112,7 +103,7 @@ class SendPasswordResetEmailView(APIView):
 
                 user.set_reset_token()
 
-                reset_url = f"http://localhost:4200/resetpassword?token={user.reset_token}"
+                reset_url = f"https://videoflix.jan-horstmann.eu/resetpassword?token={user.reset_token}"
                 html_content = render_to_string("password_reset_email.html", {
                     "user": user,
                     "reset_url": reset_url
@@ -136,13 +127,11 @@ class PasswordResetConfirmView(APIView):
         new_password = request.data.get('new_password')
         print(new_password)
         print(token)
-        # Find user by token and update password
         try:
             user = CustomUser.objects.get(reset_token=token)
             user.set_password(new_password)
-            user.reset_token = ''  # Clear token after successful reset
+            user.reset_token = ''
             user.save()
-            # user.save()
             return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
             return Response({'error': 'Invalid token.'}, status=status.HTTP_400_BAD_REQUEST)

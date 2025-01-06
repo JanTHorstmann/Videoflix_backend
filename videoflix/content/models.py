@@ -26,7 +26,7 @@ class VideoProgress(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('user', 'video')  # Ensure one record per user and video combination
+        unique_together = ('user', 'video')
 
     def __str__(self):
         return f"{self.user} - {self.video} - {self.played_time}s"

@@ -24,4 +24,3 @@ class CustomUserAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('username', 'email', 'custom', 'phone', 'confirmed')
-# admin.site.register(CustomUser)

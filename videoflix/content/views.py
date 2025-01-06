@@ -13,7 +13,7 @@ class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -31,7 +31,6 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
-        # Return only the logged-in user's progress
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
@@ -47,7 +46,6 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
         except Video.DoesNotExist:
             raise serializers.ValidationError({'video': 'Video not found.'})
 
-        # Update or create VideoProgress
         progress, created = VideoProgress.objects.update_or_create(
             user=self.request.user,
             video=video,
@@ -56,19 +54,13 @@ class VideoProgressViewSet(viewsets.ModelViewSet):
                 'duration': duration,
             }
         )
-        # Set the serializer instance to the created or updated object
         serializer.instance = progress
 
     @action(detail=True, methods=['delete'])
     def delete_progress(self, request, pk=None):
         try:
-            # Suche das Video basierend auf der ID (pk)
             video = Video.objects.get(id=pk)
-            
-            # Finde den zugehörigen VideoProgress für den Benutzer und das Video
             progress = VideoProgress.objects.get(video=video, user=request.user)
-            
-            # Lösche den gefundenen VideoProgress
             progress.delete()
             return Response({'message': 'Progress deleted successfully'}, status=204)
         
