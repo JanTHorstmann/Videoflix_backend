@@ -67,7 +67,7 @@ It handles user registration, video storage and retrieval, as well as tracking v
     python manage.py runserver
 
 
-Database Setup
+Database Setup only in Linux environment. Use the Windows Subsystem for Linux (WSL)
 
 PostgreSQL is used for this project. To set up the database on a Linux environment, use the following commands:
     CREATE DATABASE myproject;
