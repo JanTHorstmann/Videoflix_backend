@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-9zaoh8@vnwvv81ix4t*%ts%85q!fxnl8sgevos5=j0$)0y(dqw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'videoflix.jan-horstmann.eu','34.141.66.162', 'videoflix-backend.jan-horstmann.eu']
+ALLOWED_HOSTS = ['127.0.0.1', 'your_frontend_domain', 'your_backend_ip_address', 'your_backend_domain']
 
 
 # Application definition
@@ -96,8 +96,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'videoflix',
-        'USER': 'jan',
-        'PASSWORD': 'OdinDemon1992*',
+        'USER': 'YourName',
+        'PASSWORD': 'YourPassword',
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -187,7 +187,7 @@ AUTH_USER_MODEL = 'user.CustomUser'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
-    'https://videoflix.jan-horstmann.eu'
+    'your_frontend_domain'
 ]
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
